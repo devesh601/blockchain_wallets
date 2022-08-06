@@ -79,7 +79,9 @@ w3 = Web3(Web3.HTTPProvider('HTTP://127.0.0.1:7545'))
 # @TODO:
 # From `crypto_wallet.py import the functions generate_account, get_balance,
 #  and send_transaction
-# YOUR CODE HERE
+from crypto_wallet import generate_account
+from crypto_wallet import get_balance
+from crypto_wallet import send_transaction
 
 ################################################################################
 # Fintech Finder Candidate Information
@@ -97,7 +99,7 @@ candidate_database = {
 people = ["Lane", "Ash", "Jo", "Kendall"]
 
 
-def get_people():
+def get_people(w3):
     """Display the database of Fintech Finders candidate information."""
     db_list = list(candidate_database.values())
 
@@ -130,7 +132,7 @@ st.sidebar.markdown("## Client Account Address and Ethernet Balance in Ether")
 
 # @TODO:
 #  Call the `generate_account` function and save it as the variable `account`
-# YOUR CODE HERE
+account = generate_account()
 
 ##########################################
 
@@ -146,7 +148,8 @@ st.sidebar.write(account.address)
 # @TODO
 # Call `get_balance` function and pass it your account address
 # Write the returned ether balance to the sidebar
-# YOUR CODE HERE
+ether_balance = get_balance(w3, account.address)
+st.sidebar.write(ether_balance)
 
 ##########################################
 
@@ -237,11 +240,11 @@ st.sidebar.markdown("## Total Wage in Ether")
 # Calculate total `wage` for the candidate by multiplying the candidate’s hourly
 # rate from the candidate database (`candidate_database[person][3]`) by the
 # value of the `hours` variable
-# YOUR CODE HERE
+wage = hours * hourly_rate
 
 # @TODO
 # Write the `wage` calculation to the Streamlit sidebar
-# YOUR CODE HERE
+st.sidebar.write(wage)
 
 ##########################################
 # Step 2 - Part 2:
@@ -268,7 +271,7 @@ if st.sidebar.button("Send Transaction"):
     # Call the `send_transaction` function and pass it 3 parameters:
     # Your `account`, the `candidate_address`, and the `wage` as parameters
     # Save the returned transaction hash as a variable named `transaction_hash`
-    # YOUR CODE HERE
+    transaction_hash = send_transaction(w3, account, candidate_address, wage)
 
     # Markdown for the transaction hash
     st.sidebar.markdown("#### Validated Transaction Hash")
@@ -308,12 +311,12 @@ get_people()
 # communicated to Ganache, validated, and added to a block,
 # a resulting transaction hash code will be written to the Streamlit
 # application sidebar.
-    
+
 # 5. Navigate to the Ganache accounts tab and locate your account (index 0).
     # * Take a screenshot of the address, balance, and transaction (TX) count.
     # Save this screenshot to the README.md file of your GitHub repository for
     #  this Challenge assignment.
-    
+
 # 6. Navigate to the Ganache transactions tab and locate the transaction.
     # * Click the transaction and take a screenshot of it.
     # Save this screenshot to the README.md file of your GitHub repository for
